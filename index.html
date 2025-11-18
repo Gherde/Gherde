@@ -25,6 +25,8 @@
         <img src="assets/medieval_map.jpg" alt="Mappa medievale (esempio)">
         <img src="assets/gis_map.jpg" alt="GIS e cartografia (esempio)">
       </div>
+  <button class="hero-control prev" aria-label="Immagine precedente">‹</button>
+  <button class="hero-control next" aria-label="Immagine successiva">›</button>
       <div class="hero-caption">
         <h2>Davide Gherdevich — Ricerca e GIS per il patrimonio</h2>
         <p>Analisi spaziale, modellazione 3D e studi su rotoli dei morti e itinerari storici.</p>
@@ -60,6 +62,31 @@
   <footer>
   <p>© 2025 Davide Gherdevich — GitHub: @Gherde</p>
   </footer>
+  <script>
+  // Hero slideshow controls
+  (function(){
+    const slides = document.querySelectorAll('.hero-slides img');
+    let i = Array.from(slides).findIndex(s => s.classList.contains('active')) || 0;
+    let interval = null;
+    const show = idx => {
+      slides.forEach((s, j) => s.classList.toggle('active', j===idx));
+      i = idx;
+    };
+    const next = () => show((i+1) % slides.length);
+    const prev = () => show((i-1+slides.length) % slides.length);
+    const start = () => { interval = setInterval(next, 4500); };
+    const stop = () => { if(interval){ clearInterval(interval); interval = null; } };
+
+    document.querySelector('.hero').addEventListener('mouseenter', stop);
+    document.querySelector('.hero').addEventListener('mouseleave', start);
+    document.querySelector('.hero-control.next').addEventListener('click', ()=>{ stop(); next(); start(); });
+    document.querySelector('.hero-control.prev').addEventListener('click', ()=>{ stop(); prev(); start(); });
+    document.addEventListener('keydown', e => { if(e.key==='ArrowRight') { stop(); next(); start(); } if(e.key==='ArrowLeft') { stop(); prev(); start(); } });
+
+    // start autoplay
+    start();
+  })();
+  </script>
 </body>
 </html>
 </html>
